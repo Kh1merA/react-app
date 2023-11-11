@@ -1,3 +1,17 @@
-.mainPart{
+input,
+button {
+    font: inherit; /* by default input elements won't inherit font
+                    from its parent */
+    border: 0;
+    background: transparent;
+}
+
+input:focus,
+button:focus {
+    outline: 0;
+}
+
+button {
     display: flex;
+    user-select: none;
 }
