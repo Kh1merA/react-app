@@ -50,9 +50,6 @@ export default function FormikUserForm(){
                 validate={validate}
                 onSubmit={(values, { setStatus, resetForm }) => {
                     console.log(values);
-                    // Ваша логіка для відправки форми
-                    // Наприклад, ви можете викликати API або виконати інші дії
-                    // Якщо відправка була успішною, встановіть статус успіху і скиньте форму
                     resetForm();
                     setFormStatus(true);
                 }}
