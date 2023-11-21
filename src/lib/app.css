@@ -1,3 +1,12 @@
+*{
+    font-family: Lato, sans-serif;
+}
+
 .mainPart{
     display: flex;
+    flex-direction: column;
+}
+
+.formButton{
+
 }
