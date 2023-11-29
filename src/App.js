@@ -2,7 +2,7 @@ import './lib/app.css'
 
 import React from "react";
 
-import ToDoList from "./components/toDoList/toDoScript";
+import ToDoList from "./components/toDoList/toDoList";
 
 
 function App() {

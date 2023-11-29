@@ -1,37 +1,30 @@
 import React, { useState } from 'react';
 import './toDoStyle.css';
+import {useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 
-function ToDoScript() {
+import {addTask, changeTaskState, deleteTask} from "../../store/actions";
 
-    const [todoList, setList] = useState([
-        {text: 'Play Valorant', status: false },
-        {text: 'Eat chocolate', status: false},
-        {text: 'Read comics', status: true}
-    ]);
+function ToDoList() {
+    const dispatch = useDispatch();
 
     const [todoText, setToDoText] = useState('');
 
-    const addTask = () => {
+    const todos = useSelector(state => state.todoList);
+
+    const addTodo = () => {
         if (todoText.trim() !== '') {
-            const newList = [...todoList, { text: todoText, status: false }];
-            setList(newList);
+            dispatch(addTask(todoText));
             setToDoText('');
         }
     };
 
-    const deleteTask = (index) => {
-        const updatedList = [...todoList];
-        updatedList.splice(index, 1);
-        setList(updatedList);
+    const deleteTodo = (index) => {
+        dispatch(deleteTask(index));
     };
 
-    const changeTaskState = (index) => {
-        const updatedList = [...todoList];
-        const newList = updatedList[index];
-        if (newList) {
-            newList.status = !newList.status;
-            setList(updatedList);
-        }
+    const changeTodoState = (index) => {
+        dispatch(changeTaskState(index));
     };
 
     return (
@@ -40,7 +33,7 @@ function ToDoScript() {
                 <span className='header-title'>TODO</span>
             </div>
             <div className='input-container'>
-                <button onClick={addTask} className='add-button'>+</button>
+                <button onClick={addTodo} className='add-button'>+</button>
                 <input
                     type="text"
                     className="txt-input"
@@ -52,18 +45,18 @@ function ToDoScript() {
                 />
             </div>
             <div className='todo-list'>
-                {todoList.map((item, index) => (
+                {todos.map((item, index) => (
                     <div className='todo-item' key={index}>
                         <div className='todo'>
                             <input
                                 className='item-checkbox'
                                 type='checkbox'
                                 checked={item.status}
-                                onChange={() => changeTaskState(index)}
+                                onChange={() => changeTodoState(index)}
                             />
                             <span style={{ textDecoration: item.status ? 'line-through' : 'none' }}>{item.text}</span>
                         </div>
-                        <span className='delete' onClick={() => deleteTask(index)}>X</span>
+                        <span className='delete' onClick={() => deleteTodo(index)}>X</span>
                     </div>
                 ))}
             </div>
@@ -71,4 +64,4 @@ function ToDoScript() {
     );
 }
 
-export default ToDoScript;
+export default ToDoList;
