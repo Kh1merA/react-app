@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './toDoStyle.css';
-import {useSelector} from "react-redux";
-import {useDispatch} from "react-redux";
-
-import {addTask, changeTaskState, deleteTask} from "../../store/actions";
+import { fetchTodos, addTask, deleteTask, updateTask } from '../../store/slices/toDoSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 function ToDoList() {
     const dispatch = useDispatch();
-
     const [todoText, setToDoText] = useState('');
+    const { loading, error, todoArray } = useSelector(state => state.todoList);
 
-    const todos = useSelector(state => state.todoList);
+    useEffect(() => {
+        dispatch(fetchTodos());
+    }, [dispatch]);
 
-    const addTodo = () => {
+    const addTodo = async () => {
         if (todoText.trim() !== '') {
-            dispatch(addTask(todoText));
+            await dispatch(addTask(todoText));
             setToDoText('');
         }
     };
 
-    const deleteTodo = (index) => {
-        dispatch(deleteTask(index));
+    const deleteTodo = (id) => {
+        dispatch(deleteTask(id));
     };
 
-    const changeTodoState = (index) => {
-        dispatch(changeTaskState(index));
+    const changeTodoState = (id) => {
+        dispatch(updateTask(id));
     };
 
     return (
@@ -44,19 +44,21 @@ function ToDoList() {
                     onChange={(event) => setToDoText(event.target.value)}
                 />
             </div>
+            {loading && <h3>Loading....</h3>}
+            {error && <h3>{error}</h3>}
             <div className='todo-list'>
-                {todos.map((item, index) => (
-                    <div className='todo-item' key={index}>
+                {todoArray.map((item, id) => (
+                    <div className='todo-item' key={id}>
                         <div className='todo'>
                             <input
                                 className='item-checkbox'
                                 type='checkbox'
-                                checked={item.status}
-                                onChange={() => changeTodoState(index)}
+                                checked={item.completed}
+                                onChange={() => changeTodoState(id)}
                             />
-                            <span style={{ textDecoration: item.status ? 'line-through' : 'none' }}>{item.text}</span>
+                            <span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>{item.task}</span>
                         </div>
-                        <span className='delete' onClick={() => deleteTodo(index)}>X</span>
+                        <span className='delete' onClick={() => deleteTodo(id)}>X</span>
                     </div>
                 ))}
             </div>

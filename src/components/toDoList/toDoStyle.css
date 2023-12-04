@@ -49,6 +49,10 @@ body {
     margin-right: 5px;
 }
 
+.add-button:hover{
+    cursor: pointer;
+}
+
 .input-container{
     display: flex;
     gap: 10px;
@@ -112,4 +116,8 @@ body {
 
 .delete {
     font-size: 18px;
+}
+
+.delete:hover{
+    cursor: pointer;
 }
