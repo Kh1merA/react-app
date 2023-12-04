@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import './toDoStyle.css';
-import { fetchTodos, addTask, deleteTask, updateTask } from '../../store/slices/toDoSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
-function ToDoList() {
+import { fetchTodos, addTask } from '../../store/slices/toDoSlice';
+import {TodoList} from './todoList';
+
+import './todoStyle.css';
+
+function Todo() {
     const dispatch = useDispatch();
     const [todoText, setToDoText] = useState('');
-    const { loading, error, todoArray } = useSelector(state => state.todoList);
+    const { loading, error } = useSelector(state => state.todoList);
 
     useEffect(() => {
         dispatch(fetchTodos());
@@ -17,14 +20,6 @@ function ToDoList() {
             await dispatch(addTask(todoText));
             setToDoText('');
         }
-    };
-
-    const deleteTodo = (id) => {
-        dispatch(deleteTask(id));
-    };
-
-    const changeTodoState = (id) => {
-        dispatch(updateTask(id));
     };
 
     return (
@@ -47,23 +42,10 @@ function ToDoList() {
             {loading && <h3>Loading....</h3>}
             {error && <h3>{error}</h3>}
             <div className='todo-list'>
-                {todoArray.map((item, id) => (
-                    <div className='todo-item' key={id}>
-                        <div className='todo'>
-                            <input
-                                className='item-checkbox'
-                                type='checkbox'
-                                checked={item.completed}
-                                onChange={() => changeTodoState(id)}
-                            />
-                            <span style={{ textDecoration: item.completed ? 'line-through' : 'none' }}>{item.task}</span>
-                        </div>
-                        <span className='delete' onClick={() => deleteTodo(id)}>X</span>
-                    </div>
-                ))}
+                <TodoList/>
             </div>
         </div>
     );
 }
 
-export default ToDoList;
+export default Todo;

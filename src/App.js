@@ -1,14 +1,13 @@
+import React from 'react';
+
+import Todo from './components/toDoList/todo';
+
 import './lib/app.css'
-
-import React from "react";
-
-import ToDoList from "./components/toDoList/toDoList";
-
 
 function App() {
   return (
       <div>
-        <ToDoList />
+        <Todo />
       </div>
   );
 }
